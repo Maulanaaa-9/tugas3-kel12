@@ -100,6 +100,9 @@ clear();
         }
 
         pilihan = -1;
+    }
+endwin();
+return 0;
 }
 //-----------------------------------------------------------------------------------------------
 void print_menu(WINDOW *menu_win, int pilihanTerpilih, const char *opsi[], int jumlahopsi) {
@@ -168,8 +171,4 @@ void registration() {
     getch();
     clear();
     refresh(); 
-}
-
-    endwin();
-    return 0;
 }
