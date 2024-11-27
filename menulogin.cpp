@@ -172,3 +172,84 @@ void registration() {
     clear();
     refresh(); 
 }
+//-------------------------------------------------------------------------------------
+void login() {
+    clear(); 
+    refresh();
+    	int max_y, max_x;
+    		getmaxyx(stdscr, max_y, max_x); 
+
+    	int form_y = max_y / 2 - 3; 
+    	int form_x = max_x / 2 - 20; 
+
+    string userLog, password, storedPassword;
+
+    		mvprintw(form_y - 2, form_x, "-----------> LOGIN <-----------");
+    		mvprintw(form_y, form_x, "Enter username: ");
+    		mvprintw(form_y + 2, form_x, "Enter password: ");
+    refresh();
+
+    char username[50], pass[50];
+    echo();
+    	mvgetnstr(form_y, form_x + 16, username, 50);
+    	mvgetnstr(form_y + 2, form_x + 16, pass, 50);
+    noecho();
+
+    userLog = string(username);
+    password = string(pass);
+
+    ifstream myFile(userLog + ".txt");
+    	if (myFile.is_open()) {
+        	getline(myFile, storedPassword);
+        	myFile.close();
+        if (password == storedPassword) {
+            	mvprintw(form_y + 4, form_x, "Login berhasil!");
+        } else {
+            	mvprintw(form_y + 4, form_x, "Password salah.");
+        }
+    } else {
+        	mvprintw(form_y + 4, form_x, "Pengguna tidak ditemukan.");
+    }
+
+    		mvprintw(form_y + 5, form_x, "Tekan tombol apa saja untuk kembali.");
+    refresh();
+    getch();
+    clear();
+    refresh(); 
+}
+//----------------------------------------------------------------------------------------
+void list_akun() {
+    clear();
+    refresh();
+
+    int max_y, max_x;
+    getmaxyx(stdscr, max_y, max_x); 
+
+    ifstream accList("ListAccount.txt");
+    if (!accList.is_open()) {
+        mvprintw(max_y / 2, max_x / 2 - 10, "Akun tidak ditemukan.");
+        refresh();
+        getch();
+        clear();
+        refresh();
+        return;
+    }
+
+    int row_start = max_y / 2 - 5;
+    int col_start = max_x / 2 - 15;
+    	string account;
+
+    		mvprintw(row_start - 2, col_start, "List akun yang tersimpan:");
+    int current_row = row_start;
+    while (getline(accList, account)) {
+        mvprintw(current_row++, col_start, account.c_str());
+    }
+
+    accList.close();
+
+    mvprintw(current_row + 1, col_start, "Tekan tombol apa saja untuk kembali.");
+    refresh();
+    getch();
+    clear();
+    refresh();
+}
