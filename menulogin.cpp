@@ -100,7 +100,75 @@ clear();
         }
 
         pilihan = -1;
+}
+//-----------------------------------------------------------------------------------------------
+void print_menu(WINDOW *menu_win, int pilihanTerpilih, const char *opsi[], int jumlahopsi) {
+		mvwprintw(menu_win, 1, (30 - 4) / 2, "MENU");
+    for (int i = 0; i < jumlahopsi; ++i) {
+        if (i == pilihanTerpilih) wattron(menu_win, A_REVERSE);
+        	mvwprintw(menu_win, i + 3, 10, opsi[i]);
+        if (i == pilihanTerpilih) wattroff(menu_win, A_REVERSE);
     }
+    box(menu_win, 0, 0);
+    wrefresh(menu_win);
+}
+//-----------------------------------------------------------------------------------------------
+void registration() {
+    clear(); 
+    refresh(); 
+    	int max_y, max_x;
+    getmaxyx(stdscr, max_y, max_x); 
+
+    	int form_y = max_y / 2 - 3; 
+    	int form_x = max_x / 2 - 20; 
+
+    string userReg, password;
+
+    		mvprintw(form_y - 2, form_x, "-----------> REGISTER <-----------");
+    		mvprintw(form_y, form_x, "Enter username: ");
+    		mvprintw(form_y + 2, form_x, "Enter password: ");
+    refresh();
+
+    char username[50], pass[50];
+    echo(); 
+    	mvgetnstr(form_y, form_x + 16, username, 50); 
+    	mvgetnstr(form_y + 2, form_x + 16, pass, 50); 
+    noecho();
+
+    userReg = string(username);
+    password = string(pass);
+
+    ofstream myFile(userReg + ".txt");
+    	if (myFile.is_open()) {
+        	myFile << password << endl;
+        	myFile.close();
+    } else {
+        	mvprintw(form_y + 4, form_x, "Error: Pembuatan akun gagal.");
+        refresh();
+        clear();
+        refresh();
+        return;
+    }
+
+    ofstream accList("ListAccount.txt", ios::app);
+    	if (accList.is_open()) {
+        	accList << userReg << endl;
+        	accList.close();
+    } else {
+        	mvprintw(form_y + 4, form_x, "Error: Akun tidak bisa ditemukan.");
+        refresh();
+        clear();
+        refresh();
+        return;
+    }
+
+    		mvprintw(form_y + 4, form_x, "Registrasi berhasil!");
+    		mvprintw(form_y + 5, form_x, "Tekan tombol apa saja untuk kembali.");
+    refresh();
+    getch();
+    clear();
+    refresh(); 
+}
 
     endwin();
     return 0;
